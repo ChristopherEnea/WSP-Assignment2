@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/user');
 
 const getUsers = async function () {
@@ -10,10 +11,14 @@ const getUsers = async function () {
   }
 };
 
-const createUser = async function () {
+const createUser = async function (body) {
   try {
-    const users = await User.find({});
-    return users;
+    const newUser = new User(body);
+    // console.log(newUser);
+    newUser.save((err, newUser) => {
+      if (err) return console.error(err);
+      return newUser;
+    });
   } catch (e) {
     // Log Errors
     throw Error('Error while Paginating Users');
