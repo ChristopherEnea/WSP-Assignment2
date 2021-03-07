@@ -1,27 +1,47 @@
 const UserService = require('../services/user.services');
 
-const getUsers = async function (req, res, next) {
+const doActionThatMightFailValidation = async (request, response, action) => {
   try {
-    console.log(req.method, req.path, '\nBody:', req.body);
-    const users = await UserService.getUsers();
-    return res.status(200).json({ status: 200, data: users, message: 'Successfully Retrieved Users' });
+    await action();
   } catch (e) {
-    return res.status(400).json({ status: 400, message: e.message });
+    response.sendStatus(
+      e.code === 11000
+        || e.stack.includes('ValidationError')
+        || (e.reason !== undefined && e.reason.code === 'ERR_ASSERTION')
+        ? 400 : 500,
+    );
   }
 };
 
-const createUser = async function (req, res, next) {
-  try {
-    console.log(req.method, req.path, '\nBody:', req.body);
-    // const parsedBody = JSON.parse(req.body);
-    const users = await UserService.createUser(req.body);
-    return res.status(201).json({ status: 200, data: req.body, message: 'User Created' });
-  } catch (e) {
-    return res.status(400).json({ status: 400, message: e.message });
-  }
+const getUsers = async (req, res) => {
+  await doActionThatMightFailValidation(req, res, async () => {
+    console.log(req.method, req.path);
+    res.json(await UserService.getUsers());
+  });
+};
+
+const createUser = async (req, res) => {
+  await doActionThatMightFailValidation(req, res, async () => {
+    console.log(req.method, req.path);
+    await UserService.createUser(req.body);
+    res.sendStatus(201);
+  });
+};
+
+const getUser = async (req, res) => {
+  await doActionThatMightFailValidation(req, res, async () => {
+    console.log(req.method, req.path, req.params);
+    const getResult = await UserService.getUser(req.params.sku);
+    if (getResult != null) {
+      res.json(getResult);
+    } else {
+      res.sendStatus(404);
+    }
+  });
 };
 
 module.exports = {
   getUsers,
   createUser,
+  getUser,
 };
