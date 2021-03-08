@@ -15,7 +15,6 @@ const doActionThatMightFailValidation = async (request, response, action) => {
 
 const getProducts = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const products = await ProductService.getProducts(req.query);
     if (products.length === 0) {
       return res.sendStatus(404);
@@ -26,7 +25,6 @@ const getProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const getResult = await ProductService.getProduct(req.params.sku);
     if (getResult != null) {
       res.json(getResult);
@@ -38,7 +36,6 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     await ProductService.createProduct(req.body);
     res.sendStatus(201);
   });
@@ -46,17 +43,12 @@ const createProduct = async (req, res) => {
 
 const replaceProduct = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     await ProductService.replaceProduct(req.params.sku, req.body);
     return res.sendStatus(200);
   });
 };
 
 const modifyProduct = async (req, res) => {
-  console.log(req.method, req.path);
-  // const { id } = req.params;
-  // const user = req.body;
-  // delete user.sku;
   await doActionThatMightFailValidation(req, res, async () => {
     const patchResult = await ProductService.modifyProduct(req.params.sku, req.body);
     if (patchResult != null) {
@@ -69,7 +61,6 @@ const modifyProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const getResult = await ProductService.deleteProduct(req.params.sku);
     if (getResult != null) {
       res.json(getResult);
@@ -81,7 +72,6 @@ const deleteProduct = async (req, res) => {
 
 const deleteProducts = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     res.json(await ProductService.deleteProducts());
   });
 };

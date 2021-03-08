@@ -15,7 +15,6 @@ const doActionThatMightFailValidation = async (request, response, action) => {
 
 const getUsers = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const users = await UserService.getUsers(req.query);
     if (users.length === 0) {
       return res.sendStatus(404);
@@ -26,7 +25,6 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const getResult = await UserService.getUser(req.params.ssn);
     if (getResult != null) {
       res.json(getResult);
@@ -38,7 +36,6 @@ const getUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     await UserService.createUser(req.body);
     res.sendStatus(201);
   });
@@ -46,7 +43,6 @@ const createUser = async (req, res) => {
 
 const replaceUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     // if (req.body == null) { return res.sendStatus(204); }
     await UserService.replaceUser(req.params.ssn, req.body);
     return res.sendStatus(200);
@@ -54,10 +50,6 @@ const replaceUser = async (req, res) => {
 };
 
 const modifyUser = async (req, res) => {
-  console.log(req.method, req.path);
-  // const { id } = req.params;
-  // const user = req.body;
-  // delete user.sku;
   await doActionThatMightFailValidation(req, res, async () => {
     const patchResult = await UserService.modifyUser(req.params.ssn, req.body);
     if (patchResult != null) {
@@ -70,7 +62,6 @@ const modifyUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     const getResult = await UserService.deleteUser(req.params.ssn);
     if (getResult != null) {
       res.json(getResult);
@@ -82,7 +73,6 @@ const deleteUser = async (req, res) => {
 
 const deleteUsers = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
     res.json(await UserService.deleteUsers());
   });
 };
