@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/user.model');
 
 const getUsers = async (query) => User.find(query).select('-_id -__v');
 const createUser = async (body) => new User(body).save();
