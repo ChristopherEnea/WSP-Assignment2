@@ -1,5 +1,11 @@
 # Assignment2
 
+## Instructions
+
+1. Git clone repo
+2. Copy `.env.example` and fill out required fields
+3. Run `server.js`
+
 ## Resources
 [Project structure](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way)
 
