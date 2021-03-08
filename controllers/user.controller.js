@@ -20,18 +20,10 @@ const getUsers = async (req, res) => {
   });
 };
 
-const createUser = async (req, res) => {
-  await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path);
-    await UserService.createUser(req.body);
-    res.sendStatus(201);
-  });
-};
-
 const getUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path, req.params);
-    const getResult = await UserService.getUser(req.params.sku);
+    console.log(req.method, req.path, req.params.ssn);
+    const getResult = await UserService.getUser(req.params.ssn);
     if (getResult != null) {
       res.json(getResult);
     } else {
@@ -40,8 +32,15 @@ const getUser = async (req, res) => {
   });
 };
 
+const createUser = async (req, res) => {
+  await doActionThatMightFailValidation(req, res, async () => {
+    console.log(req.method, req.path, req.body);
+    res.sendStatus(201);
+  });
+};
+
 module.exports = {
+  getUser,
   getUsers,
   createUser,
-  getUser,
 };

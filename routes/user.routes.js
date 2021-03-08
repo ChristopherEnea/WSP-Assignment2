@@ -1,11 +1,13 @@
 const express = require('express');
-
-const router = express.Router();
+const BodyParser = require('body-parser');
 const UserController = require('../controllers/user.controller');
 
-router.get('/users', UserController.getUsers);
-router.post('/users', UserController.createUser);
-router.get('/users/:ssn', UserController.getUser);
+const router = express.Router();
+router.use(BodyParser.json());
+
+router.get('', UserController.getUsers);
+router.get('/:ssn', UserController.getUser);
+router.post('', UserController.createUser);
 // router.put('/users/:ssn', UserController.editUser);
 
 module.exports = router;

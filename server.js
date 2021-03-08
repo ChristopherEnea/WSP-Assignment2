@@ -3,7 +3,7 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const UserRoutes = require('./routes/user.routes');
-const Product = require('./models/product');
+// const Product = require('./models/product');
 
 dotenv.config();
 
@@ -11,7 +11,9 @@ const app = Express();
 
 app.use(BodyParser.json());
 
-app.use('/', UserRoutes);
+app.get('/', (req, res) => res.send('App is working'));
+app.use('/users', UserRoutes);
+// app.use('/products', ProductRoutes);
 
 (async () => {
   await Mongoose.connect(process.env.CONNECTION_STRING, {
