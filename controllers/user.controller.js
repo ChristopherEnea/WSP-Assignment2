@@ -16,13 +16,17 @@ const doActionThatMightFailValidation = async (request, response, action) => {
 const getUsers = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
     console.log(req.method, req.path);
-    res.json(await UserService.getUsers());
+    const users = await UserService.getUsers(req.query);
+    if (users.length === 0) {
+      return res.sendStatus(404);
+    }
+    return res.json(users);
   });
 };
 
 const getUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path, req.params.ssn);
+    console.log(req.method, req.path);
     const getResult = await UserService.getUser(req.params.ssn);
     if (getResult != null) {
       res.json(getResult);
@@ -42,7 +46,7 @@ const createUser = async (req, res) => {
 
 const replaceUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path, req.body);
+    console.log(req.method, req.path);
     // if (req.body == null) { return res.sendStatus(204); }
     await UserService.replaceUser(req.params.ssn, req.body);
     return res.sendStatus(200);
@@ -50,7 +54,7 @@ const replaceUser = async (req, res) => {
 };
 
 const modifyUser = async (req, res) => {
-  console.log(req.method, req.path, req.params.ssn, req.body);
+  console.log(req.method, req.path);
   // const { id } = req.params;
   // const user = req.body;
   // delete user.sku;
@@ -66,7 +70,7 @@ const modifyUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   await doActionThatMightFailValidation(req, res, async () => {
-    console.log(req.method, req.path, req.params.ssn);
+    console.log(req.method, req.path);
     const getResult = await UserService.deleteUser(req.params.ssn);
     if (getResult != null) {
       res.json(getResult);

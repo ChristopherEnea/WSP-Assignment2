@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-const getUsers = async () => User.find().select('-_id -__v');
+const getUsers = async (query) => User.find(query).select('-_id -__v');
 const createUser = async (body) => new User(body).save();
 const getUser = async (id) => User.findOne({ ssn: id }).select('-_id -__v');
 const replaceUser = async (id, body) => User.findOneAndReplace({ ssn: id }, body);
